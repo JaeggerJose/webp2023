@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Lab 2</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+    <body>
+        <script>
+            var d = ["資工系","資工系","資工系","資工系","資工系","資工系"];
+            var c = ["物件導向軟體設計", "計算機網路實驗", "作業系統實務", "生物統計", "通訊系統", "軟硬體專題(2)"];
+            var t = ["黃崇源", "李春良", "張哲維", "陳光武", "陳仁暉", "魏志達"];
+            var color = ["#FF0000","#00FF00","#0000FF","#FFFF00","#00FFFF","#FF00FF"];
+            var color_counter = 0, addOneNewData_counter = 0;
+            function addNewData() {
+                var myTable = document.getElementById("csie");
+                document.getElementById("secret").innerText = "助教好帥";
+                document.getElementById("error").innerText = "";
+                document.getElementById("secret").style.color = color[color_counter++%6];
+                var rowCount = c.length;
+                var cellCount = myTable.rows[0].cells.length;
+                for(var i=0;i < rowCount;i++) {
+                    var row = myTable.insertRow(-1);
+                    row.insertCell(0).innerHTML = d[i];
+                    row.insertCell(1).innerHTML = c[i];
+                    row.insertCell(2).innerHTML = t[i];
+                    console.log(d[i],c[i],t[i]);
+                }
+            }
+            function addOneNewData() {
+                var myTable = document.getElementById("csie");
+                document.getElementById("secret").innerText = "助教好帥";
+                document.getElementById("error").innerText = "";
+                document.getElementById("secret").style.color = color[color_counter++%6];
+                var rowCount = c.length;
+                var cellCount = myTable.rows[0].cells.length;
+                var i = addOneNewData_counter++%6;
+                var row = myTable.insertRow(-1);
+                row.insertCell(0).innerHTML = d[i];
+                row.insertCell(1).innerHTML = c[i];
+                row.insertCell(2).innerHTML = t[i];
+                console.log(d[i],c[i],t[i]);
+            }
+            function deleteOldData() {
+                document.getElementById("secret").style.color = color[color_counter++%6];
+                var myTable = document.getElementById("csie");
+                var rowCount = myTable.rows.length;
+                let i = rowCount-1;
+                if(i>0)
+                    myTable.deleteRow(-1);
+                else
+                    document.getElementById("error").innerText = "沒有資料可以刪除";
+            }
+            setTimeout(function run(){ 
+                addOneNewData(),
+                setTimeout(run, 100);
+            }, 100);
+            //setInterval(addOneNewData,1000);
+        </script>
+            <table id="csie" class="table table-dark table-hover">
+                <tr>
+                    <th>
+                        開課單位    
+                    </th>
+                    <th>
+                        課程名稱
+                    </th>
+                    <th>
+                        授課教師
+                    </th>
+                </tr>
+            </table>
+        <h1 id="error"><h1>
+        <button onclick="addNewData()">Add New Data</button>
+        <button onclick="deleteOldData()">delOldData</button>
+        <h1 id="secret"><h1>
+    </body>
+</html>
