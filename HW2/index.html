@@ -17,13 +17,13 @@
             if(this.readyState == 4 && this.status == 200) {
                 dataset = JSON.parse(this.responseText);
                 showDataset(dataset.slice((curPage-1)*10,curPage*10));
-                pagebutton(dataset);
+                pagebutton(dataset, curPage);
             }
         };
 
         //show page number
         function showPage(curData, ccurPage) {
-            var page = document.getElementById("page_btn");
+            var page = document.getElementById("page_page");
             var btnNmu = Math.ceil(curData.length/10);
             page.innerHTML = ccurPage+' / '+btnNmu + ' 頁';
         }
@@ -50,40 +50,47 @@
             });
         }
 
-        //page button
-        function pagebutton(data){
-            var page = document.getElementById("page_btn");
+        function createUpButton(data,currPage) {
+            var page = document.getElementById("upDiv");
             var btnNmu = Math.ceil(data.length/10);
-            showPage(data, curPage);
-
-            //pageUp button
             var btn = document.createElement("button");
             btn.setAttribute("id","buttonpageup");
             btn.innerHTML = "上一頁";
             btn.onclick = function(){
-                if(curPage > 1){
-                    curPage--;
-                    showPage(data, curPage);
-                    showDataset(data.slice((curPage-1)*10,curPage*10));
-                    pagebutton(data);
+                if(currPage > 1){
+                    currPage--;
+                    showPage(data, currPage);
+                    showDataset(data.slice((currPage-1)*10,currPage*10));
+                    removeBtn();
+                    pagebutton(data, currPage);
                 }
             }
             page.appendChild(btn);
-
-            //pageDown button
+        }
+        function createDownButton(data,currPage) {
+            var page = document.getElementById("downDiv");
+            var btnNmu = Math.ceil(data.length/10);
             var btn = document.createElement("button");
             btn.setAttribute("id","buttonpagedown");
             btn.innerHTML = "下一頁";
-            btn.onclick = function nextPage(){
-                if(curPage < btnNmu){
-                    curPage++;
-                    showPage(data, curPage);
-                    showDataset(data.slice((curPage-1)*10,curPage*10));
-                    pagebutton(data);
+            btn.onclick = function(){
+                if(currPage < btnNmu){
+                    currPage++;
+                    showPage(data, currPage);
+                    showDataset(data.slice((currPage-1)*10,currPage*10));
+                    removeBtn();
+                    pagebutton(data, currPage);
                 }
-            };
+            }
             page.appendChild(btn);
-            
+        }
+        //page button
+        function pagebutton(data, curPage){
+            showPage(data, curPage);
+            //pageUp button
+            createUpButton(data,curPage); 
+            //pageDown button
+            createDownButton(data,curPage);
         };
 
         //searchTitle function
@@ -100,6 +107,7 @@
             curPage = 1;
             console.log(searchTitlePage);
             var searchTitle = document.getElementById("searchTitle").value;
+            //claer page button
             removeBtn();
 
             //check searchTitle is empty
@@ -107,12 +115,11 @@
                 var page = document.getElementById("page_btn");
                 showPage(dataset, curPage);
                 showDataset(dataset.slice((curPage-1)*10,curPage*10));
-                pagebutton(dataset);
+                pagebutton(dataset, curPage);
                 return;
             }
 
             var searchResult = [];
-            //claer page button
             dataset.forEach(function(data, index) {
                 if(data['title'].indexOf(searchTitle) != -1){
                     searchResult.push(data);
@@ -120,20 +127,8 @@
             });
 
             showPage(dataset, searchTitlePage);
-            pagebutton(searchResult);
-            showSearchDataset(searchResult.slice((curPage-1)*10,curPage*10), searchTitlePage);
-        }
-
-        function showSearchDataset(searchResult, searchTitlePage) {
-            var myTable = document.getElementById("csie");
-            for(var i = myTable.rows.length - 1; i > 0; i--)
-                myTable.deleteRow(i);
-            searchResult.forEach(function(data, index) {
-                var row = myTable.insertRow(-1);
-                row.insertCell(0).innerHTML = data['title'];
-                row.insertCell(1).innerHTML = data['showInfo'][0]['location'];
-                row.insertCell(2).innerHTML = data['showInfo'][0]['price'];
-            });
+            pagebutton(searchResult, searchTitlePage);
+            showDataset(searchResult.slice((curPage-1)*10,curPage*10));
         }
     </script>
 </head>
@@ -150,6 +145,10 @@
                 <th>景點票價</th>
             </tr>
         </table>
-    <div id="page_btn"></div>
+    <div class="p">
+        <div id="upDiv" class="left"></div>
+        <div id="page_page" class="middle"></div>
+        <div id="downDiv" class="right"></div> 
+    </div>
  </body>
 </html>
