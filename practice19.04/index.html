@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script>
+            var name = 'IU';
+            var age = 20;
+            const url = 'https://script.google.com/macros/s/AKfycbw5PnzwybI_VoZaHz65TpA5DYuLkxIF-HUGjJ6jRTOje0E6bVo/exec?name=${name}&age=${age}`'
+            fetch(url, {method: 'GET',})
+            .then(res => res.text())
+            .then(result => {
+                //console.log(result);
+                //var user_name = result.result[0].name;
+                //var str = `Hello, ${user_name['last']}!`;
+                document.getElementById('user_name').innerHTML = result;
+            })
+            fetch('https://randomuser.me/api/', {method: 'GET'})
+            .then(res => res.json())
+            .then(result => {
+                console.log(result);
+                var user_name = result.results[0].name;
+                var str = `Hello, ${user_name['last']}!`;
+                document.getElementById('user_name').innerHTML = str;
+            })
+            fetch('https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=200&q=80', {method: 'GET'})
+            .then(res=> res.blob())
+            .then((imageBlob) => {
+                let img = document.createElement('img');
+                document.getElementById('newImage').appendChild(img);
+                img.src = URL.createObjectURL(imageBlob);
+            })
+        </script>
+    </head>
+    <body>  
+        <div id="user_name"></div>
+        <div id="newImage"></div>
+    </body>
+</html>
