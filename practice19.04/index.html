@@ -4,14 +4,11 @@
         <script>
             var name = 'IU';
             var age = 20;
-            const url = 'https://script.google.com/macros/s/AKfycbw5PnzwybI_VoZaHz65TpA5DYuLkxIF-HUGjJ6jRTOje0E6bVo/exec?name=${name}&age=${age}`'
+            const url = `https://script.google.com/macros/s/AKfycbw5PnzwybI_VoZaHz65TpA5DYuLkxIF-HUGjJ6jRTOje0E6bVo/exec?name=${name}&age=${age}`;
             fetch(url, {method: 'GET',})
             .then(res => res.text())
             .then(result => {
-                //console.log(result);
-                //var user_name = result.result[0].name;
-                //var str = `Hello, ${user_name['last']}!`;
-                document.getElementById('user_name').innerHTML = result;
+                document.getElementById('hi').innerHTML = result;
             })
             fetch('https://randomuser.me/api/', {method: 'GET'})
             .then(res => res.json())
@@ -28,10 +25,25 @@
                 document.getElementById('newImage').appendChild(img);
                 img.src = URL.createObjectURL(imageBlob);
             })
+            //fetch('https://davidwalsh.name/submit',{method: 'POST', body: new FormData(document.getElementById('myForm'))})
+            
+            var openurl = 'https://reqres.in/api/articles';
+            var data = {username:'example'};
+            fetch(openurl,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({  title: 'foo'})
+            }).then(res=> res.json())
+            .then(data => document.getElementById('post1').innerHTML = data.id);
+            
         </script>
     </head>
     <body>  
         <div id="user_name"></div>
+        <div id="hi"></div>
         <div id="newImage"></div>
+        <div id="post1"></div>
     </body>
 </html>
